@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Mystic Hub Signer">
+    <meta name="keywords" content="Mystic Hub Signer">
+    <title>Mystic Hub Signer</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #161616, #232323);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            font-size: 16px;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 850px;
+            padding: 30px;
+        }
+        header h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #00a3ff;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: #bbb;
+        }
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .card {
+            background-color: #2c2f2f;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #333;
+            border-radius: 4px;
+            border: 1px solid #444;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .file-label:hover {
+            background-color: #444;
+            color: white;
+        }
+
+        .file-preview {
+            margin-top: 10px;
+            color: #aaa;
+            font-size: 14px;
+            text-align: left;
+        }
+
+
+        .password-container {
+            position: relative;
+        }
+
+        input[type="password"], input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            background-color: #333;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #ddd;
+            font-size: 16px;
+            padding-right: 40px; /* Space for the eye icon */
+        }
+
+        .eye-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #bbb;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .eye-icon:hover {
+            color: white;
+        }
+
+
+        .checkbox-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #00a3ff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0088cc;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+
+        .progress-container {
+            margin-top: 20px;
+            height: 10px;
+            width: 100%;
+            background-color: #444;
+            border-radius: 5px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #00a3ff;
+            width: 0;
+            transition: width 0.5s ease-in-out;
+        }
+
+
+        .cube-loader {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            margin: auto;
+            display: none;
+        }
+
+        .cube {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            background-color: #333;
+            border: 2px solid #fff;
+            animation: foldCube 2.4s infinite linear;
+        }
+
+
+        .cube1 {
+            top: 0;
+            left: 0;
+            transform-origin: 100% 100%;
+        }
+        .cube2 {
+            top: 0;
+            right: 0;
+            transform-origin: 0 100%;
+        }
+        .cube3 {
+            bottom: 0;
+            right: 0;
+            transform-origin: 0 0;
+        }
+        .cube4 {
+            bottom: 0;
+            left: 0;
+            transform-origin: 100% 0;
+        }
+
+
+        @keyframes foldCube {
+            0%, 10% {
+                transform: perspective(140px) rotateX(-180deg);
+                opacity: 0;
+            }
+            25%, 75% {
+                transform: perspective(140px) rotateX(0deg);
+                opacity: 1;
+            }
+            90%, 100% {
+                transform: perspective(140px) rotateY(180deg);
+                opacity: 0;
+            }
+        }
+
+
+        .cube1 {
+            animation-delay: 0.3s;
+        }
+        .cube2 {
+            animation-delay: 0.6s;
+        }
+        .cube3 {
+            animation-delay: 0.9s;
+        }
+        .cube4 {
+            animation-delay: 1.2s;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <h1>Mystic Hub Signer</h1>
+            <p class="subtitle">Your trusted app signing platform</p>
+        </header>
+        <div class="form-container">
+            <div class="card">
+                <form id="meowsign" class="form">
+                    <div class="input-group">
+                        <label for="ipa" class="file-label">Upload IPA</label>
+                        <input type="file" id="ipa" class="file-input" accept=".ipa,application/octet-stream">
+                        <div class="file-preview" id="ipaPreview"></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="prov" class="file-label">Upload Mobile Provisioning Profile</label>
+                        <input type="file" id="prov" class="file-input" accept=".mobileprovision">
+                        <div class="file-preview" id="provPreview"></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="p12" class="file-label">Upload P12 Certificate</label>
+                        <input type="file" id="p12" class="file-input" accept=".p12">
+                        <div class="file-preview" id="p12Preview"></div>
+                    </div>
+                    <div class="input-group password-container">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password">
+                        <i class="fas fa-eye eye-icon" id="togglePassword"></i>
+                    </div>
+                    <div class="input-group checkbox-group">
+                        <input type="checkbox" id="store">
+                        <label for="store">Store Certificate (still in the works)</label>
+                    </div>
+                    <div class="button-container">
+                        <button type="button" id="uploadipa" class="btn-primary">Upload and Sign</button>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="cube-loader" id="loadingIcon">
+                        <div class="cube cube1"></div>
+                        <div class="cube cube2"></div>
+                        <div class="cube cube3"></div>
+                        <div class="cube cube4"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.type === 'password' ? 'text' : 'password';
+            password.type = type;
+
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        function updateFilePreview(input, previewElement) {
+            if (input.files.length > 0) {
+                previewElement.textContent = input.files[0].name;
+            } else {
+                previewElement.textContent = '';
+            }
+        }
+
+        document.getElementById('ipa').addEventListener('change', function() {
+            updateFilePreview(this, document.getElementById('ipaPreview'));
+        });
+
+        document.getElementById('prov').addEventListener('change', function() {
+            updateFilePreview(this, document.getElementById('provPreview'));
+        });
+
+        document.getElementById('p12').addEventListener('change', function() {
+            updateFilePreview(this, document.getElementById('p12Preview'));
+        });
+
+        function progressHandler(event) {
+            var percent = event.loaded / event.total;
+            const progressBar = document.getElementById("progressBar");
+            progressBar.style.width = percent * 100 + '%';
+        }
+
+        document.getElementById('store').addEventListener('click', function() {
+            if (this.checked) {
+                Swal.fire({
+                    text: "This will store your P12 and MobileProvision on the server. A password will still be required to sign.",
+                    title: "Are you sure?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, I'm sure",
+                    cancelButtonText: "Cancel",
+                }).then((result) => {
+                    if (!result.isConfirmed) {
+                        this.checked = false;
+                    }
+                });
+            }
+        });
+
+        document.getElementById('uploadipa').addEventListener('click', function() {
+            var formData = new FormData();
+            formData.append("ipa", document.getElementById("ipa").files[0]);
+            formData.append("mp", document.getElementById("prov").files[0]);
+            formData.append("p12", document.getElementById("p12").files[0]);
+            formData.append("password", document.getElementById("password").value);
+            formData.append("expiryDays", "5");
+
+            // Show the loading icon
+            document.getElementById("loadingIcon").style.display = 'block';
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://install.applecertdev.xyz/sign", true);
+            xhr.upload.addEventListener("progress", progressHandler, false);
+            
+            xhr.onload = function() {
+                // Hide the loading icon
+                document.getElementById("loadingIcon").style.display = 'none';
+
+                if (xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    if (data.install_url) {
+                        Swal.fire({
+                            text: "IPA signed and ready to install!",
+                            icon: "success",
+                            confirmButtonText: "Install IPA",
+                            cancelButtonText: "Copy URL",
+                            showCancelButton: true,
+                        }).then(function(result) {
+                            if (result.isConfirmed) {
+                                window.location.href = data.install_url;
+                            } else {
+                                navigator.clipboard.writeText(data.install_url);
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            text: data.message,
+                            icon: "error",
+                            confirmButtonText: "Ok, got it",
+                        });
+                    }
+                }
+            };
+            xhr.send(formData);
+        });
+    </script>
+</body>
+</html>
